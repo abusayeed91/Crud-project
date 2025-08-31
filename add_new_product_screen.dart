@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:product_app/widgets/snack_bar_message.dart';
 
-
 class AddNewProductScreen extends StatefulWidget {
   const AddNewProductScreen({super.key});
 
@@ -136,11 +135,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     int totalPrice = int.parse(_priceTEController.text) *
         int.parse(_quantityTEController.text);
     Map<String, dynamic> requestBody = {
-      "ProductName": _nameTEController.text,
-      "ProductCode": int.parse(_codeTEController.text),
-      "Img": _imageUrlTEController.text,
-      "Qty":  int.parse(_quantityTEController.text),
-      "UnitPrice":  int.parse(_priceTEController.text),
+      "ProductName": _nameTEController.text.trim(),
+      "ProductCode": int.parse(_codeTEController.text.trim()),
+      "Img": _imageUrlTEController.text.trim(),
+      "Qty":  int.parse(_quantityTEController.text.trim()),
+      "UnitPrice":  int.parse(_priceTEController.text.trim()),
       "TotalPrice": totalPrice
     };
     // Request with data
@@ -158,15 +157,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       final decodedJson = jsonDecode(response.body);
       if (decodedJson['status'] == 'success') {
         _clearTextFields();
-        if (mounted){
-          showSnackBarMessage(context, 'Product created successfully');
-        }
-
+        showSnackBarMessage(context, 'Product created successfully');
       } else {
         String errorMessage = decodedJson['data'];
-        if (mounted){
-          showSnackBarMessage(context, errorMessage);
-        }
+
+        showSnackBarMessage(context, errorMessage);
       }
     }
 
